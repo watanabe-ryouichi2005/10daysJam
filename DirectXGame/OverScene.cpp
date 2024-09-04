@@ -12,16 +12,16 @@ OverScene::~OverScene() {
 }
 
 void OverScene::Initialize() {
-	modelTitle_ = Model::CreateFromOBJ("clear", true);
+	modelTitle_ = Model::CreateFromOBJ("gameOver", true);
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
-	const float kClearText = 30.0f;
+	const float kClearText = 10.0f;
 	worldTransformTitle_.Initialize();
 	worldTransformTitle_.scale_ = {kClearText, kClearText, kClearText};
 	worldTransformTitle_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
-	worldTransformTitle_.translation_.y = -4.0f;
+	worldTransformTitle_.translation_.y = -5.0f;
 
 	worldTransformSkydome_.Initialize();
 }
