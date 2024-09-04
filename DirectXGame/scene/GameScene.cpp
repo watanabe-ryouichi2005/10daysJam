@@ -1,5 +1,4 @@
 #include "GameScene.h"
-#include "GameScene.h"
 #include "TextureManager.h"
 #include "myMath.h"
 #include <cassert>
@@ -10,11 +9,11 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 
 	delete deathParticles_;
-	for (Goal* goal : goals_) {
-		delete goal;
-	}
 	for (DeathBlock* deathBlock : deathBlocks_) {
 		delete deathBlock;
+	}
+	for (Goal* goal : goals_) {
+		delete goal;
 	}
 	delete player_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -100,7 +99,7 @@ void GameScene::Initialize() {
 
 	DeathBlock* newDeathBlock_3 = new DeathBlock();
 	Vector3 deathBlockPosition_3 = mapChipField_->GetMapChipPositionByIndex(15, 6);
-	newDeathBlock_3->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_3); 
+	newDeathBlock_3->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_3);
 	deathBlocks_.push_back(newDeathBlock_3);
 
 	phase_ = Phase::kPlay;
@@ -119,12 +118,12 @@ void GameScene::Update() {
 
 		cameraController->Update();
 
-		for (Goal* goal : goals_) {
-			goal->Update();
-		}
-
 		for (DeathBlock* deathBlock : deathBlocks_) {
 			deathBlock->Update();
+		}
+
+		for (Goal* goal : goals_) {
+			goal->Update();
 		}
 
 		UpdateCamera();
@@ -132,16 +131,17 @@ void GameScene::Update() {
 		UpdateBlocks();
 
 		CheckAllCollisions();
-		
+
 		break;
-	case Phase::kGoal:
-		if (deathParticles_ && deathParticles_->IsFinished()) {
-			finished_ = true;
+
+	case Phase::kDead:
+		if (deathParticles_ && deathParticles_->IsDead()) {
+			isDead_ = true;
 		}
 		worldTransformSkydome_.UpdateMatrix();
 
-		for (Goal* goal : goals_) {
-			goal->Update();
+		for (DeathBlock* deathBlock : deathBlocks_) {
+			deathBlock->Update();
 		}
 
 		if (deathParticles_) {
@@ -150,14 +150,15 @@ void GameScene::Update() {
 
 		UpdateCamera();
 		break;
-	case Phase::kDeath:
-		if (deathParticles_ && deathParticles_->IsDead()) {
-			dead_ = true;
+
+	case Phase::kGoal:
+		if (deathParticles_ && deathParticles_->IsFinished()) {
+			finished_ = true;
 		}
 		worldTransformSkydome_.UpdateMatrix();
 
-		for (DeathBlock* deathBlock : deathBlocks_) {
-			deathBlock->Update();
+		for (Goal* goal : goals_) {
+			goal->Update();
 		}
 
 		if (deathParticles_) {
@@ -206,21 +207,21 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlock, viewProjection_);
 		}
 	}
-	if (!player_->IsGoal()) {
-		// 自キャラの描画
-		player_->Draw();
-	}
 	if (!player_->IsDead()) {
 		// 自キャラの描画
 		player_->Draw();
 	}
-
-	for (Goal* goal : goals_) {
-		goal->Draw();
+	if (!player_->IsGoal()) {
+		// 自キャラの描画
+		player_->Draw();
 	}
 
 	for (DeathBlock* deathBlock : deathBlocks_) {
 		deathBlock->Draw();
+	}
+
+	for (Goal* goal : goals_) {
+		goal->Draw();
 	}
 
 	if (deathParticles_) {
@@ -248,6 +249,17 @@ void GameScene::Draw() {
 void GameScene::ChangePhase() {
 	switch (phase_) {
 	case Phase::kPlay:
+		if (player_->IsDead()) {
+			// 死亡演出
+			phase_ = Phase::kDead;
+
+			const Vector3& deathParticlesPosition = player_->GetWorldPosition();
+
+			deathParticles_ = new DeathParticles;
+
+			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
+		}
+
 		if (player_->IsGoal()) {
 			// 死亡演出
 			phase_ = Phase::kGoal;
@@ -258,22 +270,12 @@ void GameScene::ChangePhase() {
 
 			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
 		}
+		break;
 
-		if (player_->IsDead()) {
-			// 死亡演出
-			phase_ = Phase::kDeath;
+	case Phase::kDead:
 
-			const Vector3& deathParticlesPosition = player_->GetWorldPosition();
-
-			deathParticles_ = new DeathParticles;
-
-			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
-		}
 		break;
 	case Phase::kGoal:
-
-		break;
-	case Phase::kDeath:
 
 		break;
 	}
@@ -352,29 +354,29 @@ void GameScene::CheckAllCollisions() {
 		// 自キャラの座標
 		aabb1 = player_->GetAABB();
 
-		// 自キャラと擲弾全ての当たり判定
-		for (Goal* goal : goals_) {
-			// 擲弾の座標
-			aabb2 = goal->GetAABB();
+		for (DeathBlock* deathBlock : deathBlocks_) {
+			aabb2 = deathBlock->GetAABB();
 
 			// AABB同士の交差判定
 			if (IsCollision(aabb1, aabb2)) {
 				// 自キャラの衝突時コールバックを呼び出す
-				player_->GoalOnCollision(goal);
+				player_->OverOnCollision(deathBlock);
 				// 擲弾の衝突時コールバックを呼び出す
-				goal->OnCollision(player_);
+				deathBlock->OnCollision(player_);
 			}
 		}
 
-		for (DeathBlock* deathBlock : deathBlocks_) {
-			aabb3 = deathBlock->GetAABB();
+		// 自キャラと擲弾全ての当たり判定
+		for (Goal* goal : goals_) {
+			// 擲弾の座標
+			aabb3 = goal->GetAABB();
 
 			// AABB同士の交差判定
 			if (IsCollision(aabb1, aabb3)) {
 				// 自キャラの衝突時コールバックを呼び出す
-				player_->OverOnCollision(deathBlock);
+				player_->GoalOnCollision(goal);
 				// 擲弾の衝突時コールバックを呼び出す
-				deathBlock->OnCollision(player_);
+				goal->OnCollision(player_);
 			}
 		}
 	}

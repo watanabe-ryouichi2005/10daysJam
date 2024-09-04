@@ -24,12 +24,12 @@ void DeathParticles::Update() {
 
 	if (counter_ >= kDuration) {
 		counter_ = kDuration;
-		isFinished_ = true;
+		isDead_ = true;
 	}
 
 	if (counter_ >= kDuration) {
 		counter_ = kDuration;
-		isDead_ = true;
+		isFinished_ = true;
 	}
 
 	for (uint32_t i = 0; i < worldTransforms_.size(); ++i) {
@@ -51,10 +51,10 @@ void DeathParticles::Update() {
 }
 
 void DeathParticles::Draw() {
-	if (isFinished_) {
+	if (isDead_) {
 		return;
 	}
-	if (isDead_) {
+	if (isFinished_) {
 		return;
 	}
 

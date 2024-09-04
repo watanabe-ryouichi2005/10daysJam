@@ -1,10 +1,10 @@
 #include "Audio.h"
 #include "AxisIndicator.h"
 #include "ClearScene.h"
-#include "OverScene.h"
 #include "DirectXCommon.h"
 #include "GameScene.h"
 #include "ImGuiManager.h"
+#include "OverScene.h"
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "TitleScene.h"
@@ -20,8 +20,8 @@ enum class Scene {
 
 	kTitle,
 	kGame,
+	kDead,
 	kClear,
-	kDeath,
 };
 
 Scene scene = Scene::kTitle;
@@ -40,8 +40,17 @@ void ChangeScene() {
 			gameScene->Initialize();
 		}
 		break;
+
 	case Scene::kGame:
-		if (gameScene->IsFinished()) {
+		if (gameScene->IsDead()) {
+			// シーン変更
+			scene = Scene::kDead;
+			delete gameScene;
+			gameScene = nullptr;
+			overScene = new OverScene();
+			overScene->Initialize();
+		}
+		else if (gameScene->IsFinished()) {
 			// シーン変更
 			scene = Scene::kClear;
 			delete gameScene;
@@ -49,15 +58,17 @@ void ChangeScene() {
 			clearScene = new ClearScene();
 			clearScene->Initialize();
 		}
-		if (gameScene->IsDead()) {
+		break;
+
+	case Scene::kDead:
+		if (overScene->IsFinished()) {
 			// シーン変更
-			scene = Scene::kDeath;
-			delete gameScene;
-			gameScene = nullptr;
-			overScene = new OverScene();
-			overScene->Initialize();
+			scene = Scene::kTitle;
+			delete overScene;
+			overScene = nullptr;
+			titleScene = new TitleScene();
+			titleScene->Initialize();
 		}
-		
 		break;
 	case Scene::kClear:
 		if (clearScene->IsFinished()) {
@@ -65,16 +76,6 @@ void ChangeScene() {
 			scene = Scene::kTitle;
 			delete clearScene;
 			clearScene = nullptr;
-			titleScene = new TitleScene();
-			titleScene->Initialize();
-		}
-		break;
-	case Scene::kDeath:
-		if (overScene->IsFinished()) {
-			// シーン変更
-			scene = Scene::kTitle;
-			delete overScene;
-			overScene = nullptr;
 			titleScene = new TitleScene();
 			titleScene->Initialize();
 		}
@@ -89,11 +90,11 @@ void UpdateScene() {
 	case Scene::kGame:
 		gameScene->Update();
 		break;
+	case Scene::kDead:
+		overScene->Update();
+		break;
 	case Scene::kClear:
 		clearScene->Update();
-		break;
-	case Scene::kDeath:
-		overScene->Update();
 		break;
 	}
 }
@@ -105,11 +106,11 @@ void DrawScene() {
 	case Scene::kGame:
 		gameScene->Draw();
 		break;
+	case Scene::kDead:
+		overScene->Draw();
+		break;
 	case Scene::kClear:
 		clearScene->Draw();
-		break;
-	case Scene::kDeath:
-		overScene->Draw();
 		break;
 	}
 }
@@ -204,8 +205,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 各種解放
 	delete titleScene;
 	delete gameScene;
-	delete clearScene;
 	delete overScene;
+	delete clearScene;
 	// 3Dモデル解放
 	Model::StaticFinalize();
 	audio->Finalize();
