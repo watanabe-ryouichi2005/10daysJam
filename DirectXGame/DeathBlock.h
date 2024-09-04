@@ -7,7 +7,7 @@
 
 class Player;
 
-class JumpBlock {
+class DeathBlock {
 public:
 	/// <summary>
 	/// 敵

@@ -15,6 +15,7 @@ public:
 	void Draw();
 
 	bool IsFinished() const { return isFinished_; };
+	bool IsDead() const { return isDead_; };
 
 private:
 	static inline const uint32_t kNumParticles = 8;
@@ -26,6 +27,7 @@ private:
 	std::array<WorldTransform, kNumParticles> worldTransforms_;
 	ViewProjection* viewProjection_ = nullptr;
 	bool isFinished_ = false;
+	bool isDead_ = false;
 	float counter_ = 0.0f;
 	ObjectColor objectColor_;
 	Vector4 color_;

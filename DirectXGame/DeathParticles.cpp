@@ -27,6 +27,11 @@ void DeathParticles::Update() {
 		isFinished_ = true;
 	}
 
+	if (counter_ >= kDuration) {
+		counter_ = kDuration;
+		isDead_ = true;
+	}
+
 	for (uint32_t i = 0; i < worldTransforms_.size(); ++i) {
 		Vector3 velocity = {kSpeed, 0, 0};
 		// 速度ベクトルを回転される
@@ -47,6 +52,9 @@ void DeathParticles::Update() {
 
 void DeathParticles::Draw() {
 	if (isFinished_) {
+		return;
+	}
+	if (isDead_) {
 		return;
 	}
 

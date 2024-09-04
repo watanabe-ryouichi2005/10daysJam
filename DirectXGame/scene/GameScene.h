@@ -7,13 +7,14 @@
 #include "DirectXCommon.h"
 #include "Goal.h"
 #include "Input.h"
-#include "JumpBlock.h"
+#include "DeathBlock.h"
 #include "MapChipField.h"
 #include "Model.h"
 #include "Player.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "OverScene.h"
 #include <list>
 #include <vector>
 
@@ -49,11 +50,13 @@ public: // メンバ関数
 	void Draw();
 
 	bool IsFinished() const { return finished_; };
+	bool IsDead() const { return dead_; };
 
 private: // メンバ変数
 	enum class Phase {
 		kPlay, // ゲームプレイ
 		kGoal, // ゲームクリア
+		kDeath, // デス演出
 	};
 
 	DirectXCommon* dxCommon_ = nullptr;
@@ -74,7 +77,7 @@ private: // メンバ変数
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelGoal_ = nullptr;
-	Model* modelJumpBlock_ = nullptr;
+	Model* modelDeathBlock_ = nullptr;
 	Model* modelDeathParticle_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
@@ -87,9 +90,10 @@ private: // メンバ変数
 	CameraController* cameraController = nullptr;
 
 	std::list<Goal*> goals_;
-	std::list<JumpBlock*> jumpBlocks_;
+	std::list<DeathBlock*> deathBlocks_;
 
 	bool finished_ = false;
+	bool dead_ = false;
 	Phase phase_;
 
 	DeathParticles* deathParticles_ = nullptr;

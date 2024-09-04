@@ -13,8 +13,8 @@ GameScene::~GameScene() {
 	for (Goal* goal : goals_) {
 		delete goal;
 	}
-	for (JumpBlock* jumpBlock : jumpBlocks_) {
-		delete jumpBlock;
+	for (DeathBlock* deathBlock : deathBlocks_) {
+		delete deathBlock;
 	}
 	delete player_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -25,7 +25,7 @@ GameScene::~GameScene() {
 	}
 	delete modelDeathParticle_;
 	delete modelGoal_;
-	delete modelJumpBlock_;
+	delete modelDeathBlock_;
 	delete modelPlayer_;
 	delete modelBlock_;
 	delete debugCamera_;
@@ -46,7 +46,7 @@ void GameScene::Initialize() {
 	// 3Dモデルの生成
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	modelGoal_ = Model::CreateFromOBJ("goal");
-	modelJumpBlock_ = Model::CreateFromOBJ("jumpBlock");
+	modelDeathBlock_ = Model::CreateFromOBJ("jumpBlock");
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	modelDeathParticle_ = Model::CreateFromOBJ("deathParticle", true);
@@ -83,25 +83,25 @@ void GameScene::Initialize() {
 
 	// 敵の生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(1, 0);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(10, 68);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
 	goals_.push_back(newGoal);
 
-	JumpBlock* newJumpBlock = new JumpBlock();
-	Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(8, 59);
-	newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
-	jumpBlocks_.push_back(newJumpBlock);
+	DeathBlock* newDeathBlock = new DeathBlock();
+	Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(8, 59);
+	newDeathBlock->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition);
+	deathBlocks_.push_back(newDeathBlock);
 
-	JumpBlock* newJumpBlock_2 = new JumpBlock();
-	Vector3 jumpBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(13, 35);
-	newJumpBlock_2->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_2);
-	jumpBlocks_.push_back(newJumpBlock_2);
+	DeathBlock* newDeathBlock_2 = new DeathBlock();
+	Vector3 deathBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(13, 35);
+	newDeathBlock_2->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_2);
+	deathBlocks_.push_back(newDeathBlock_2);
 
-	JumpBlock* newJumpBlock_3 = new JumpBlock();
-	Vector3 jumpBlockPosition_3 = mapChipField_->GetMapChipPositionByIndex(15, 6);
-	newJumpBlock_3->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_3);
-	jumpBlocks_.push_back(newJumpBlock_3);
+	DeathBlock* newDeathBlock_3 = new DeathBlock();
+	Vector3 deathBlockPosition_3 = mapChipField_->GetMapChipPositionByIndex(15, 6);
+	newDeathBlock_3->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_3); 
+	deathBlocks_.push_back(newDeathBlock_3);
 
 	phase_ = Phase::kPlay;
 }
@@ -123,8 +123,8 @@ void GameScene::Update() {
 			goal->Update();
 		}
 
-		for (JumpBlock* jumpBlock : jumpBlocks_) {
-			jumpBlock->Update();
+		for (DeathBlock* deathBlock : deathBlocks_) {
+			deathBlock->Update();
 		}
 
 		UpdateCamera();
@@ -132,10 +132,7 @@ void GameScene::Update() {
 		UpdateBlocks();
 
 		CheckAllCollisions();
-
-		if (player_->IsGoal()) {
-			CheckAllCollisions();
-		}
+		
 		break;
 	case Phase::kGoal:
 		if (deathParticles_ && deathParticles_->IsFinished()) {
@@ -147,8 +144,20 @@ void GameScene::Update() {
 			goal->Update();
 		}
 
-		for (JumpBlock* jumpBlock : jumpBlocks_) {
-			jumpBlock->Update();
+		if (deathParticles_) {
+			deathParticles_->Update();
+		}
+
+		UpdateCamera();
+		break;
+	case Phase::kDeath:
+		if (deathParticles_ && deathParticles_->IsDead()) {
+			dead_ = true;
+		}
+		worldTransformSkydome_.UpdateMatrix();
+
+		for (DeathBlock* deathBlock : deathBlocks_) {
+			deathBlock->Update();
 		}
 
 		if (deathParticles_) {
@@ -201,13 +210,17 @@ void GameScene::Draw() {
 		// 自キャラの描画
 		player_->Draw();
 	}
+	if (!player_->IsDead()) {
+		// 自キャラの描画
+		player_->Draw();
+	}
 
 	for (Goal* goal : goals_) {
 		goal->Draw();
 	}
 
-	for (JumpBlock* jumpBlock : jumpBlocks_) {
-		jumpBlock->Draw();
+	for (DeathBlock* deathBlock : deathBlocks_) {
+		deathBlock->Draw();
 	}
 
 	if (deathParticles_) {
@@ -245,8 +258,22 @@ void GameScene::ChangePhase() {
 
 			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
 		}
+
+		if (player_->IsDead()) {
+			// 死亡演出
+			phase_ = Phase::kDeath;
+
+			const Vector3& deathParticlesPosition = player_->GetWorldPosition();
+
+			deathParticles_ = new DeathParticles;
+
+			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
+		}
 		break;
 	case Phase::kGoal:
+
+		break;
+	case Phase::kDeath:
 
 		break;
 	}
@@ -333,21 +360,21 @@ void GameScene::CheckAllCollisions() {
 			// AABB同士の交差判定
 			if (IsCollision(aabb1, aabb2)) {
 				// 自キャラの衝突時コールバックを呼び出す
-				player_->OnCollision(goal);
+				player_->GoalOnCollision(goal);
 				// 擲弾の衝突時コールバックを呼び出す
 				goal->OnCollision(player_);
 			}
 		}
 
-		for (JumpBlock* jumpBlock : jumpBlocks_) {
-			aabb3 = jumpBlock->GetAABB();
+		for (DeathBlock* deathBlock : deathBlocks_) {
+			aabb3 = deathBlock->GetAABB();
 
 			// AABB同士の交差判定
 			if (IsCollision(aabb1, aabb3)) {
 				// 自キャラの衝突時コールバックを呼び出す
-				player_->JumpOnCollision(jumpBlock);
+				player_->OverOnCollision(deathBlock);
 				// 擲弾の衝突時コールバックを呼び出す
-				jumpBlock->OnCollision(player_);
+				deathBlock->OnCollision(player_);
 			}
 		}
 	}

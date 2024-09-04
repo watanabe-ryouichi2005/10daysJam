@@ -1,9 +1,9 @@
-#include "JumpBlock.h"
+#include "DeathBlock.h"
 #include "myMath.h"
 #include <cassert>
 #include <numbers>
 
-void JumpBlock::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
+void DeathBlock::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 	assert(model);
 
 	model_ = model;
@@ -14,17 +14,17 @@ void JumpBlock::Initialize(Model* model, ViewProjection* viewProjection, const V
 	viewProjection_ = viewProjection;
 }
 
-void JumpBlock::Update() {
+void DeathBlock::Update() {
 	// 行列計算
 	worldTransform_.UpdateMatrix();
 }
 
-void JumpBlock::Draw() {
+void DeathBlock::Draw() {
 	// モデル描画
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 
-Vector3 JumpBlock::GetWorldPosition() {
+Vector3 DeathBlock::GetWorldPosition() {
 	Vector3 worldPos;
 	// ワールド行列の平行移動成分を取得(ワールド座標)
 	worldPos.x = worldTransform_.matWorld_.m[3][0];
@@ -33,7 +33,7 @@ Vector3 JumpBlock::GetWorldPosition() {
 	return worldPos;
 }
 
-AABB JumpBlock::GetAABB() {
+AABB DeathBlock::GetAABB() {
 	Vector3 worldPos = GetWorldPosition();
 
 	AABB aabb;
@@ -44,4 +44,4 @@ AABB JumpBlock::GetAABB() {
 	return aabb;
 }
 
-void JumpBlock::OnCollision(const Player* player) { (void)player; }
+void DeathBlock::OnCollision(const Player* player) { (void)player; }

@@ -84,16 +84,16 @@ AABB Player::GetAABB() {
 	return aabb;
 }
 
-void Player::OnCollision(const Goal* goal) {
+void Player::GoalOnCollision(const Goal* goal) {
 	(void)goal;
 	// ジャンプ初速
 	isGoal_ = true;
 }
 
-void Player::JumpOnCollision(const JumpBlock* jumpBlock) {
-	(void)jumpBlock;
+void Player::OverOnCollision(const DeathBlock* deathBlock) {
+	(void)deathBlock;
 	// ジャンプ初速
-	velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0);
+	isDead_ = true;
 }
 
 void Player::InputMove() {

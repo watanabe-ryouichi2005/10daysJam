@@ -7,7 +7,7 @@
 
 class MapChipField;
 class Goal;
-class JumpBlock;
+class DeathBlock;
 
 /// <summary>
 /// 自キャラ
@@ -51,8 +51,8 @@ public:
 
 	AABB GetAABB();
 
-	void OnCollision(const Goal* goal);
-	void JumpOnCollision(const JumpBlock* jumpBlock);
+	void GoalOnCollision(const Goal* goal);
+	void OverOnCollision(const DeathBlock* deathBlock);
 
 	// setter
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
@@ -61,6 +61,7 @@ public:
 	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
 	const Vector3& GetVelocity() const { return velocity_; }
 	bool IsGoal() const { return isGoal_; };
+	bool IsDead() const { return isDead_; };
 
 private:
 	static inline const float kAcceleration = 0.1f;
@@ -95,6 +96,7 @@ private:
 	float turnTimer_ = 0.0f;
 	MapChipField* mapChipField_ = nullptr;
 	bool isGoal_ = false;
+	bool isDead_ = false;
 
 	void InputMove();
 	void CheckMapCollision(CollisionMapInfo& info);
