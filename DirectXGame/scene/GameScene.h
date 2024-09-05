@@ -71,6 +71,7 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+	
 	// 自キャラ
 	Player* player_ = nullptr;
 	// モデルデータ
@@ -83,6 +84,7 @@ private: // メンバ変数
 	Model* modelDeathParticle_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
+	
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
 	// デバッグカメラ有効

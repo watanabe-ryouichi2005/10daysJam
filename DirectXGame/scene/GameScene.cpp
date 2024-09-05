@@ -87,7 +87,7 @@ void GameScene::Initialize() {
 
 	// 敵の生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(10, 198);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(23, 198);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
 	goals_.push_back(newGoal);
@@ -102,9 +102,9 @@ void GameScene::Initialize() {
 	}
 
 	// ジャンプブロックの生成
-	for (int32_t i = 0; i < 16; ++i) {
+	for (int32_t i = 0; i < 11; ++i) {
 		JumpBlock* newJumpBlock = new JumpBlock();
-		Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(0 + i, 10);
+		Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(5 + i, 10);
 		newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
 
 		jumpBlocks_.push_back(newJumpBlock);

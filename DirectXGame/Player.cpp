@@ -159,6 +159,21 @@ void Player::InputMove() {
 			velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0);
 		}
 	} else {
+		// 空中にいるときの処理
+
+		// 左右移動操作
+		Vector3 acceleration = {};
+		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+			acceleration.x += kAcceleration / 60.0f;
+		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+			acceleration.x -= kAcceleration / 60.0f;
+		}
+
+		// 空中での移動加速
+		velocity_ += acceleration;
+		// 最大速度制限
+		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+
 		// 落下速度
 		velocity_ += Vector3(0, -kGravityAcceleration / 60.0f, 0);
 		// 落下速度制限
@@ -418,7 +433,7 @@ void Player::AnimateTurn() {
 		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
 		// 自キャラの角度を設定する
 		worldTransform_.rotation_.y = Easing::Liner(destinationRotationY, turnFirstRotationY_, Easing::EaseInOut(turnTimer_));
-	}
+	} 
 }
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
