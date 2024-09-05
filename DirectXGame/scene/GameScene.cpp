@@ -58,7 +58,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(4, 68);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 2);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
@@ -82,25 +82,18 @@ void GameScene::Initialize() {
 
 	// 敵の生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(10, 68);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(0, 68);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
 	goals_.push_back(newGoal);
 
-	DeathBlock* newDeathBlock = new DeathBlock();
-	Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(8, 59);
-	newDeathBlock->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition);
-	deathBlocks_.push_back(newDeathBlock);
+	for (int32_t i = 0; i < 38; ++i) {
+		DeathBlock* newDeathBlock = new DeathBlock();
+		Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(0 + i, 0);
+		newDeathBlock->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition);
 
-	DeathBlock* newDeathBlock_2 = new DeathBlock();
-	Vector3 deathBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(13, 35);
-	newDeathBlock_2->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_2);
-	deathBlocks_.push_back(newDeathBlock_2);
-
-	DeathBlock* newDeathBlock_3 = new DeathBlock();
-	Vector3 deathBlockPosition_3 = mapChipField_->GetMapChipPositionByIndex(15, 6);
-	newDeathBlock_3->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_3);
-	deathBlocks_.push_back(newDeathBlock_3);
+		deathBlocks_.push_back(newDeathBlock);
+	}
 
 	phase_ = Phase::kPlay;
 }

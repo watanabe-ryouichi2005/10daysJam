@@ -12,16 +12,16 @@ void CameraController::Update() {
 	const WorldTransform& targetWorldTransform = target_->GetWorldTransform();
 	Vector3 targetVelocity = target_->GetVelocity();
 
-	// destination_.x = targetWorldTransform.translation_.x + targetOffset_.x * targetVelocity.x + targetOffset_.x;
+	destination_.x = targetWorldTransform.translation_.x + targetOffset_.x * targetVelocity.x + targetOffset_.x;
 	destination_.y = targetWorldTransform.translation_.y + targetOffset_.y * targetVelocity.y + targetOffset_.y;
 	destination_.z = targetWorldTransform.translation_.z + targetOffset_.z * targetVelocity.z + targetOffset_.z;
 
-	// viewProjection_.translation_.x = Lerp(viewProjection_.translation_.x, destination_.x, kInterpolationRate_);
+	viewProjection_.translation_.x = Lerp(viewProjection_.translation_.x, destination_.x, kInterpolationRate_);
 	viewProjection_.translation_.y = Lerp(viewProjection_.translation_.y, destination_.y, kInterpolationRate_);
 	viewProjection_.translation_.z = Lerp(viewProjection_.translation_.z, destination_.z, kInterpolationRate_);
 
 	// 追従対象が画面外に出ないように補正
-	// viewProjection_.translation_.x = std::clamp(viewProjection_.translation_.x, targetWorldTransform.translation_.x + targetMargin.left, targetWorldTransform.translation_.x + targetMargin.right);
+	viewProjection_.translation_.x = std::clamp(viewProjection_.translation_.x, targetWorldTransform.translation_.x + targetMargin.left, targetWorldTransform.translation_.x + targetMargin.right);
 	viewProjection_.translation_.y = std::clamp(viewProjection_.translation_.y, targetWorldTransform.translation_.y + targetMargin.bottom, targetWorldTransform.translation_.y + targetMargin.top);
 
 	// 移動範囲制限

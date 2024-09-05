@@ -26,6 +26,9 @@ public:
 	void OnCollision(const Player* player);
 
 private:
+	static inline const float kWalkSpeed = 0.01f;
+	static inline const float kWalkMotionAngleStart = 0.0f;
+	static inline const float kWalkMotionAngleEnd = 30.0f;
 	static inline const float kWalkMotionTime = 1.0f;
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
