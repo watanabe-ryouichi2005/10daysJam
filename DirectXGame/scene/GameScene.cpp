@@ -92,6 +92,7 @@ void GameScene::Initialize() {
 
 	goals_.push_back(newGoal);
 
+	// デスブロックの生成
 	for (int32_t i = 0; i < 38; ++i) {
 		DeathBlock* newDeathBlock = new DeathBlock();
 		Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(0 + i, 0);
@@ -100,6 +101,7 @@ void GameScene::Initialize() {
 		deathBlocks_.push_back(newDeathBlock);
 	}
 
+	// ジャンプブロックの生成
 	for (int32_t i = 0; i < 16; ++i) {
 		JumpBlock* newJumpBlock = new JumpBlock();
 		Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(0 + i, 10);
