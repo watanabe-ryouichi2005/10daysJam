@@ -63,7 +63,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 2);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 5);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
@@ -87,7 +87,7 @@ void GameScene::Initialize() {
 
 	// 敵の生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(0, 68);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(10, 198);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
 	goals_.push_back(newGoal);
@@ -100,10 +100,13 @@ void GameScene::Initialize() {
 		deathBlocks_.push_back(newDeathBlock);
 	}
 
-	JumpBlock* newJumpBlock = new JumpBlock();
-	Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(8, 7);
-	newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
-	jumpBlocks_.push_back(newJumpBlock);
+	for (int32_t i = 0; i < 16; ++i) {
+		JumpBlock* newJumpBlock = new JumpBlock();
+		Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(0 + i, 10);
+		newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
+
+		jumpBlocks_.push_back(newJumpBlock);
+	}
 
 	phase_ = Phase::kPlay;
 }
