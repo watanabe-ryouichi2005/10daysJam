@@ -8,6 +8,7 @@
 class MapChipField;
 class Goal;
 class DeathBlock;
+class JumpBlock;
 
 /// <summary>
 /// 自キャラ
@@ -53,6 +54,7 @@ public:
 
 	void GoalOnCollision(const Goal* goal);
 	void OverOnCollision(const DeathBlock* deathBlock);
+	void JumpOnCollision(const JumpBlock* jumpBlock);
 
 	// setter
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }

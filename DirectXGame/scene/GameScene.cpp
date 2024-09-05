@@ -15,6 +15,9 @@ GameScene::~GameScene() {
 	for (Goal* goal : goals_) {
 		delete goal;
 	}
+	for (JumpBlock* jumpBlock : jumpBlocks_) {
+		delete jumpBlock;
+	}
 	delete player_;
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -25,6 +28,7 @@ GameScene::~GameScene() {
 	delete modelDeathParticle_;
 	delete modelGoal_;
 	delete modelDeathBlock_;
+	delete modelJumpBlock_;
 	delete modelPlayer_;
 	delete modelBlock_;
 	delete debugCamera_;
@@ -45,7 +49,8 @@ void GameScene::Initialize() {
 	// 3Dモデルの生成
 	modelPlayer_ = Model::CreateFromOBJ("player");
 	modelGoal_ = Model::CreateFromOBJ("goal");
-	modelDeathBlock_ = Model::CreateFromOBJ("jumpBlock");
+	modelDeathBlock_ = Model::CreateFromOBJ("deathBlock");
+	modelJumpBlock_ = Model::CreateFromOBJ("jumpBlock");
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	modelDeathParticle_ = Model::CreateFromOBJ("deathParticle", true);
@@ -95,6 +100,11 @@ void GameScene::Initialize() {
 		deathBlocks_.push_back(newDeathBlock);
 	}
 
+	JumpBlock* newJumpBlock = new JumpBlock();
+	Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(8, 7);
+	newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
+	jumpBlocks_.push_back(newJumpBlock);
+
 	phase_ = Phase::kPlay;
 }
 
@@ -117,6 +127,10 @@ void GameScene::Update() {
 
 		for (Goal* goal : goals_) {
 			goal->Update();
+		}
+
+		for (JumpBlock* jumpBlock : jumpBlocks_) {
+			jumpBlock->Update();
 		}
 
 		UpdateCamera();
@@ -215,6 +229,10 @@ void GameScene::Draw() {
 
 	for (Goal* goal : goals_) {
 		goal->Draw();
+	}
+
+	for (JumpBlock* jumpBlock : jumpBlocks_) {
+		jumpBlock->Draw();
 	}
 
 	if (deathParticles_) {
@@ -340,7 +358,7 @@ void GameScene::UpdateBlocks() {
 void GameScene::CheckAllCollisions() {
 
 	// 判定対象1と2座標
-	AABB aabb1, aabb2, aabb3;
+	AABB aabb1, aabb2, aabb3, aabb4;
 
 #pragma region 自キャラと敵キャラの当たり判定
 	{
@@ -370,6 +388,18 @@ void GameScene::CheckAllCollisions() {
 				player_->GoalOnCollision(goal);
 				// 擲弾の衝突時コールバックを呼び出す
 				goal->OnCollision(player_);
+			}
+		}
+
+		for (JumpBlock* jumpBlock : jumpBlocks_) {
+			aabb4 = jumpBlock->GetAABB();
+
+			// AABB同士の交差判定
+			if (IsCollision(aabb1, aabb4)) {
+				// 自キャラの衝突時コールバックを呼び出す
+				player_->JumpOnCollision(jumpBlock);
+				// 擲弾の衝突時コールバックを呼び出す
+				jumpBlock->OnCollision(player_);
 			}
 		}
 	}

@@ -7,6 +7,7 @@
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Goal.h"
+#include "JumpBlock.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
@@ -78,6 +79,7 @@ private: // メンバ変数
 	Model* modelSkydome_ = nullptr;
 	Model* modelGoal_ = nullptr;
 	Model* modelDeathBlock_ = nullptr;
+	Model* modelJumpBlock_ = nullptr;
 	Model* modelDeathParticle_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
@@ -89,8 +91,9 @@ private: // メンバ変数
 	MapChipField* mapChipField_;
 	CameraController* cameraController = nullptr;
 
-	std::list<Goal*> goals_;
 	std::list<DeathBlock*> deathBlocks_;
+	std::list<Goal*> goals_;
+	std::list<JumpBlock*> jumpBlocks_;
 
 	bool finished_ = false;
 	bool isDead_ = false;

@@ -96,6 +96,12 @@ void Player::OverOnCollision(const DeathBlock* deathBlock) {
 	isDead_ = true;
 }
 
+void Player::JumpOnCollision(const JumpBlock* jumpBlock) {
+	(void)jumpBlock;
+	// ジャンプ初速
+	velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0);
+}
+
 void Player::InputMove() {
 	// 移動入力
 	if (onGround_) {
