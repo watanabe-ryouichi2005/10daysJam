@@ -63,7 +63,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 5);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 8);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
@@ -82,7 +82,7 @@ void GameScene::Initialize() {
 	cameraController->SetTarget(player_);
 	cameraController->Reset();
 
-	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	CameraController::Rect cameraArea = {5.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController->SetMovableArea(cameraArea);
 
 	// 敵の生成
@@ -93,22 +93,22 @@ void GameScene::Initialize() {
 	goals_.push_back(newGoal);
 
 	// デスブロックの生成
-	for (int32_t i = 0; i < 38; ++i) {
+	for (int32_t i = 0; i < 9; ++i) {
 		DeathBlock* newDeathBlock = new DeathBlock();
-		Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(0 + i, 0);
+		Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(1 + i, 0);
 		newDeathBlock->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition);
 
 		deathBlocks_.push_back(newDeathBlock);
 	}
 
 	// ジャンプブロックの生成
-	for (int32_t i = 0; i < 11; ++i) {
+	/*for (int32_t i = 0; i < 11; ++i) {
 		JumpBlock* newJumpBlock = new JumpBlock();
 		Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(5 + i, 10);
 		newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
 
 		jumpBlocks_.push_back(newJumpBlock);
-	}
+	}*/
 
 	phase_ = Phase::kPlay;
 }
