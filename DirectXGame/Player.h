@@ -7,6 +7,7 @@
 
 class MapChipField;
 class Goal;
+class FallingBlock;
 class DeathBlock;
 class JumpBlock;
 
@@ -52,9 +53,10 @@ public:
 
 	AABB GetAABB();
 
-	void GoalOnCollision(const Goal* goal);
+	void FallingOnCollision(const FallingBlock* fallingBlock);
 	void OverOnCollision(const DeathBlock* deathBlock);
 	void JumpOnCollision(const JumpBlock* jumpBlock);
+	void GoalOnCollision(const Goal* goal);
 
 	// setter
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }

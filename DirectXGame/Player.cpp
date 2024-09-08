@@ -84,10 +84,10 @@ AABB Player::GetAABB() {
 	return aabb;
 }
 
-void Player::GoalOnCollision(const Goal* goal) {
-	(void)goal;
+void Player::FallingOnCollision(const FallingBlock* fallingBlock) {
+	(void)fallingBlock;
 	// ジャンプ初速
-	isGoal_ = true;
+	isDead_ = true;
 }
 
 void Player::OverOnCollision(const DeathBlock* deathBlock) {
@@ -100,6 +100,12 @@ void Player::JumpOnCollision(const JumpBlock* jumpBlock) {
 	(void)jumpBlock;
 	// ジャンプ初速
 	velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0);
+}
+
+void Player::GoalOnCollision(const Goal* goal) {
+	(void)goal;
+	// ジャンプ初速
+	isGoal_ = true;
 }
 
 void Player::InputMove() {
@@ -164,9 +170,37 @@ void Player::InputMove() {
 		// 左右移動操作
 		Vector3 acceleration = {};
 		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+			// 左移動中の右入力
+			if (velocity_.x < 0.0f) {
+				// 速度と逆方向に入力中は急ブレーキ
+				velocity_.x *= (1.0f - kAttenuation);
+			}
+
 			acceleration.x += kAcceleration / 60.0f;
+
+			if (lrDirection_ != LRDirection::kRight) {
+				lrDirection_ = LRDirection::kRight;
+				// 旋回開始時の角度
+				turnFirstRotationY_ = worldTransform_.rotation_.y;
+				// 旋回タイマー
+				turnTimer_ = kTimeTurn;
+			}
 		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+			// 右移動中の左入力
+			if (velocity_.x > 0.0f) {
+				// 速度と逆方向に入力中は急ブレーキ
+				velocity_.x *= (1.0f - kAttenuation);
+			}
+
 			acceleration.x -= kAcceleration / 60.0f;
+
+			if (lrDirection_ != LRDirection::kLeft) {
+				lrDirection_ = LRDirection::kLeft;
+				// 旋回開始時の角度
+				turnFirstRotationY_ = worldTransform_.rotation_.y;
+				// 旋回タイマー
+				turnTimer_ = kTimeTurn;
+			}
 		}
 
 		// 空中での移動加速

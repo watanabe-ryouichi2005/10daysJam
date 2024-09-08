@@ -113,6 +113,7 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="DeathParticles.cpp" />
+    <ClCompile Include="FallingBlock.cpp" />
     <ClCompile Include="Goal.cpp" />
     <ClCompile Include="DeathBlock.cpp" />
     <ClCompile Include="JumpBlock.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="DeathParticles.h" />
     <ClInclude Include="Easing.h" />
+    <ClInclude Include="FallingBlock.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="DeathBlock.h" />

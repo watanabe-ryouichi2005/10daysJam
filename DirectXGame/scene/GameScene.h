@@ -2,11 +2,12 @@
 
 #include "Audio.h"
 #include "CameraController.h"
-#include "DeathBlock.h"
 #include "DeathParticles.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Goal.h"
+#include "FallingBlock.h"
+#include "DeathBlock.h"
 #include "JumpBlock.h"
 #include "Input.h"
 #include "MapChipField.h"
@@ -79,6 +80,7 @@ private: // メンバ変数
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelGoal_ = nullptr;
+	Model* modelFallingBlock_ = nullptr;
 	Model* modelDeathBlock_ = nullptr;
 	Model* modelJumpBlock_ = nullptr;
 	Model* modelDeathParticle_ = nullptr;
@@ -93,8 +95,9 @@ private: // メンバ変数
 	MapChipField* mapChipField_;
 	CameraController* cameraController = nullptr;
 
-	std::list<DeathBlock*> deathBlocks_;
 	std::list<Goal*> goals_;
+	std::list<FallingBlock*> fallingBlocks_;
+	std::list<DeathBlock*> deathBlocks_;
 	std::list<JumpBlock*> jumpBlocks_;
 
 	bool finished_ = false;

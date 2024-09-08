@@ -49,7 +49,7 @@ public:
 
 private:
 	// ブロックの個数
-	static inline const uint32_t kNumBlockVirtical = 50;
+	static inline const uint32_t kNumBlockVirtical = 114;
 	static inline const uint32_t kNumBlockHorizontal = 11;
 
 	MapChipData mapChipData_;
