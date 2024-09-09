@@ -23,7 +23,7 @@ void TitleScene::Initialize() {
 	worldTransformPlayer_.Initialize();
 	worldTransformPlayer_.scale_ = {kPlayerScale, kPlayerScale, kPlayerScale};
 	worldTransformPlayer_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
-	worldTransformPlayer_.translation_.y = -9.0f;
+	worldTransformPlayer_.translation_.y = -8.0f;
 
 	const float kTextTitle = 10.0f;
 	worldTransformTitle_.Initialize();
@@ -57,6 +57,6 @@ void TitleScene::Draw() {
 	Model::PreDraw(commandList);
 	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
 	modelTitle_->Draw(worldTransformTitle_, viewProjection_);
-	modelPlayer_->Draw(worldTransformPlayer_, viewProjection_);
+	//modelPlayer_->Draw(worldTransformPlayer_, viewProjection_);
 	Model::PostDraw();
 }

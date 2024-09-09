@@ -127,7 +127,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow(L"10daysJam");
+	win->CreateGameWindow(L"6041_Ghost_Down");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
