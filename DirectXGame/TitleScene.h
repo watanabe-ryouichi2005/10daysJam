@@ -21,10 +21,12 @@ private:
 
 	ViewProjection viewProjection_;
 	WorldTransform worldTransformTitle_;
+	WorldTransform worldTransformPress_;
 	WorldTransform worldTransformPlayer_;
 	WorldTransform worldTransformSkydome_;
 
 	Model* modelTitle_ = nullptr;
+	Model* modelPress_ = nullptr;
 	Model* modelPlayer_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 

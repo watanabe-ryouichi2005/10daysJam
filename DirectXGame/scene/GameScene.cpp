@@ -170,6 +170,13 @@ void GameScene::Initialize() {
 
 	jumpBlocks_.push_back(newJumpBlock_2);
 
+	// サウンドデータの読み込み
+	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
+	// 音声再生
+	audio_->PlayWave(soundDataHandle_);
+	// 音声再生
+	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
+
 	phase_ = Phase::kPlay;
 }
 
@@ -364,7 +371,7 @@ void GameScene::ChangePhase() {
 
 		break;
 	case Phase::kGoal:
-
+		
 		break;
 	}
 }
