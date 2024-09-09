@@ -291,7 +291,7 @@ void GameScene::Draw() {
 		// 自キャラの描画
 		player_->Draw();
 	}
-	if (!player_->IsGoal()) {
+	else if (!player_->IsGoal()) {
 		// 自キャラの描画
 		player_->Draw();
 	}
@@ -348,7 +348,7 @@ void GameScene::ChangePhase() {
 			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
 		}
 
-		if (player_->IsGoal()) {
+		else if (player_->IsGoal()) {
 			// 死亡演出
 			phase_ = Phase::kGoal;
 
