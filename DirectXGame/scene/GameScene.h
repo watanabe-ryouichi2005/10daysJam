@@ -84,6 +84,7 @@ private: // メンバ変数
 	Model* modelDeathBlock_ = nullptr;
 	Model* modelJumpBlock_ = nullptr;
 	Model* modelDeathParticle_ = nullptr;
+	Model* modelLifeCube_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
 	

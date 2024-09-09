@@ -62,6 +62,7 @@ void Player::Draw() {
 
 	// 3Dモデルを描画
 	model_->Draw(worldTransform_, *viewProjection_);
+
 }
 
 Vector3 Player::GetWorldPosition() {
@@ -71,6 +72,7 @@ Vector3 Player::GetWorldPosition() {
 	worldPos.y = worldTransform_.matWorld_.m[3][1];
 	worldPos.z = worldTransform_.matWorld_.m[3][2];
 	return worldPos;
+
 }
 
 AABB Player::GetAABB() {

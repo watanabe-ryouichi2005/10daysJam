@@ -6,6 +6,7 @@
 // 前方宣言
 class Player;
 
+
 /// カメラコントローラ
 /// </summary>
 class CameraController {
@@ -41,6 +42,7 @@ private:
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 	Player* target_ = nullptr;
+
 	// 追従対象とカメラの座標の差（オフセット）
 	Vector3 targetOffset_ = {0, 0, -20.0f};
 

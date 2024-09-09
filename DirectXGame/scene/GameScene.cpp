@@ -59,6 +59,8 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	modelDeathParticle_ = Model::CreateFromOBJ("deathParticle", true);
+	modelLifeCube_ = Model::CreateFromOBJ("LifeCube", true);
+
 
 	// マップチップフィールドの生成
 	mapChipField_ = new MapChipField;
@@ -295,6 +297,7 @@ void GameScene::Draw() {
 		// 自キャラの描画
 		player_->Draw();
 	}
+	//modelLifeCube_->Draw(worldTransformSkydome_, viewProjection_);
 
 	for (FallingBlock* fallingBlock : fallingBlocks_) {
 		fallingBlock->Draw();
