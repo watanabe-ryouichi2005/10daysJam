@@ -32,8 +32,17 @@ Scene scene = Scene::kTitle;
 void ChangeScene() {
 	switch (scene) {
 	case Scene::kTitle:
-
-		if (titleScene->IsFinished()) {
+		if (titleScene->IsGame()) {
+			// シーン変更
+			scene = Scene::kGame;
+			// 旧シーンの解放
+			delete titleScene;
+			titleScene = nullptr;
+			// 新シーンの生成と初期化
+			gameScene = new GameScene();
+			gameScene->Initialize();
+		}
+		else if (titleScene->IsTutorial()) {
 			// シーン変更
 			scene = Scene::kTutorial;
 			// 旧シーンの解放
@@ -48,7 +57,6 @@ void ChangeScene() {
 		if (tutorialScene->IsFinished()) {
 			// シーン変更
 			scene = Scene::kGame;
-			// 旧シーンの解放
 			delete tutorialScene;
 			tutorialScene = nullptr;
 			// 新シーンの生成と初期化
