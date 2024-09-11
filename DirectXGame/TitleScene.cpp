@@ -54,9 +54,6 @@ void TitleScene::Initialize() {
 }
 
 void TitleScene::Update() {
-	if (Input::GetInstance()->PushKey(DIK_SPACE) != 0 && !Input ::GetInstance()->TriggerKey(DIK_SPACE) == 0) {
-		finished_ = true;
-	}
 	counter_ += 1.0f / 60.0f;
 	counter_ = std::fmod(counter_, kTimeTitleMove);
 
@@ -70,12 +67,18 @@ void TitleScene::Update() {
 	if (select_ == 1) {
 		worldTransformSelectWall_.translation_.y = -16.0f;
 	}
-
 	if (Input::GetInstance()->PushKey(DIK_UP) != 0 && !Input ::GetInstance()->TriggerKey(DIK_UP) == 0) {
 		select_ = 0;
 	}
 	if (select_ == 0) {
 		worldTransformSelectWall_.translation_.y = -8.0f;
+	}
+
+	if (select_ == 0 && Input::GetInstance()->PushKey(DIK_SPACE) != 0 && !Input ::GetInstance()->TriggerKey(DIK_SPACE) == 0) {
+		game_ = true;
+	}
+	if (select_ == 1 && Input::GetInstance()->PushKey(DIK_SPACE) != 0 && !Input ::GetInstance()->TriggerKey(DIK_SPACE) == 0) {
+		tutorial_ = true;
 	}
 
 	viewProjection_.TransferMatrix();

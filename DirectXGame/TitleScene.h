@@ -14,7 +14,8 @@ public:
 
 	void Draw();
 
-	bool IsFinished() const { return finished_; };
+	bool IsGame() const { return game_; };
+	bool IsTutorial() const { return tutorial_; };
 
 private:
 	static inline const float kTimeTitleMove = 2.0f;
@@ -37,6 +38,7 @@ private:
 	Model* modelSelectWall_ = nullptr;
 
 	float counter_ = 0.0f;
-	bool finished_ = false;
+	bool game_ = false;
+	bool tutorial_ = false;
 	bool select_ = 0;
 };

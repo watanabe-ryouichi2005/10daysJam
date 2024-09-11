@@ -62,6 +62,13 @@ void GameScene::Initialize() {
 	modelLifeCube_ = Model::CreateFromOBJ("LifeCube", true);
 
 
+	// サウンドデータの読み込み
+	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
+	// 音声再生
+	audio_->PlayWave(soundDataHandle_);
+	// 音声再生
+	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
+
 	// マップチップフィールドの生成
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
@@ -171,13 +178,6 @@ void GameScene::Initialize() {
 	newJumpBlock_2->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_2);
 
 	jumpBlocks_.push_back(newJumpBlock_2);
-
-	// サウンドデータの読み込み
-	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
-	// 音声再生
-	audio_->PlayWave(soundDataHandle_);
-	// 音声再生
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
 	phase_ = Phase::kPlay;
 }
