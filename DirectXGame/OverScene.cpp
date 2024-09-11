@@ -16,7 +16,8 @@ void OverScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-
+	soundHandle_ = audio_->LoadWave("bgm.mp3");
+	audio_->StopWave(soundHandle_) ;
 	const float kClearText = 10.0f;
 	worldTransformTitle_.Initialize();
 	worldTransformTitle_.scale_ = {kClearText, kClearText, kClearText};
@@ -29,7 +30,10 @@ void OverScene::Initialize() {
 void OverScene::Update() {
 	if (Input ::GetInstance()->PushKey(DIK_SPACE) != 0 && !Input ::GetInstance()->TriggerKey(DIK_SPACE) == 0) {
 		finished_ = true;
+				
+
 	}
+	
 	counter_ += 1.0f / 60.0f;
 	counter_ = std::fmod(counter_, kTimeTitleMove);
 

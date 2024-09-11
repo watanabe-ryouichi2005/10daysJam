@@ -53,6 +53,7 @@ public: // メンバ関数
 
 	bool IsDead() const { return isDead_; };
 	bool IsFinished() const { return finished_; };
+	
 
 private: // メンバ変数
 	enum class Phase {

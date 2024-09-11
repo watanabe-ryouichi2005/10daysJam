@@ -67,7 +67,7 @@ void GameScene::Initialize() {
 	// 音声再生
 	audio_->PlayWave(soundDataHandle_);
 	// 音声再生
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
+	//voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
 	// マップチップフィールドの生成
 	mapChipField_ = new MapChipField;
@@ -235,7 +235,10 @@ void GameScene::Update() {
 
 		if (deathParticles_) {
 			deathParticles_->Update();
+
+		//audio_->StopWave(soundDataHandle_);
 		}
+
 
 		UpdateCamera();
 		break;
@@ -356,6 +359,7 @@ void GameScene::ChangePhase() {
 			deathParticles_ = new DeathParticles;
 
 			deathParticles_->Initialize(modelDeathParticle_, &viewProjection_, deathParticlesPosition);
+			//audio_->StopWave(soundDataHandle_);
 		}
 
 		else if (player_->IsGoal()) {
@@ -371,7 +375,6 @@ void GameScene::ChangePhase() {
 		break;
 
 	case Phase::kDead:
-
 		break;
 	case Phase::kGoal:
 		
@@ -386,6 +389,7 @@ void GameScene::GenerateBlocks() {
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
 
 	// 要素数を変更する
+		
 	// 列数を設定 (縦方向のブロック数)
 	worldTransformBlocks_.resize(numBlockVirtical);
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
@@ -471,6 +475,7 @@ void GameScene::CheckAllCollisions() {
 			if (IsCollision(aabb1, aabb3)) {
 				// 自キャラの衝突時コールバックを呼び出す
 				player_->OverOnCollision(deathBlock);
+				
 				// 擲弾の衝突時コールバックを呼び出す
 				deathBlock->OnCollision(player_);
 			}
