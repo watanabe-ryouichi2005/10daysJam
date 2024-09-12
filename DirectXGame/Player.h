@@ -6,10 +6,10 @@
 #include "WorldTransform.h"
 
 class MapChipField;
-class Goal;
 class FallingBlock;
 class DeathBlock;
 class JumpBlock;
+class Goal;
 
 /// <summary>
 /// 自キャラ

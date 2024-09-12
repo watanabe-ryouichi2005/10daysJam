@@ -39,6 +39,9 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 	delete mapChipField_;
 	delete cameraController;
+	delete modelOne_;
+	delete modelTwo_;
+	delete modelThree_;
 }
 
 void GameScene::Initialize() {
@@ -60,6 +63,32 @@ void GameScene::Initialize() {
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	modelDeathParticle_ = Model::CreateFromOBJ("deathParticle", true);
 
+	// 3Dテキストモデル生成
+	modelOne_ = Model::CreateFromOBJ("1_text", true);
+	modelTwo_ = Model::CreateFromOBJ("2_text", true);
+	modelThree_ = Model::CreateFromOBJ("3_text", true);
+
+	const float kOneText = 1.6f;
+	worldTransformOne_.Initialize();
+	worldTransformOne_.scale_ = {kOneText, kOneText, kOneText};
+	worldTransformOne_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
+	worldTransformOne_.translation_.x = 2.0f;
+	worldTransformOne_.translation_.y = +45.5f;
+
+	const float kTwoText = 1.6f;
+	worldTransformTwo_.Initialize();
+	worldTransformTwo_.scale_ = {kTwoText, kTwoText, kTwoText};
+	worldTransformTwo_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
+	worldTransformTwo_.translation_.x = 5.0f;
+	worldTransformTwo_.translation_.y = +45.5f;
+
+	const float kThreeText = 1.6f;
+	worldTransformThree_.Initialize();
+	worldTransformThree_.scale_ = {kThreeText, kThreeText, kThreeText};
+	worldTransformThree_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
+	worldTransformThree_.translation_.x = 8.0f;
+	worldTransformThree_.translation_.y = +45.5f;
+
 	// サウンドデータの読み込み
 	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
 	// 音声再生
@@ -75,7 +104,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(2, 8);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 8);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
@@ -96,13 +125,6 @@ void GameScene::Initialize() {
 
 	CameraController::Rect cameraArea = {5.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController->SetMovableArea(cameraArea);
-
-	// 敵の生成
-	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(6, 149);
-	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
-
-	goals_.push_back(newGoal);
 
 	// 落ちるブロックの生成
 	for (int32_t i = 0; i < 9; ++i) {
@@ -149,21 +171,47 @@ void GameScene::Initialize() {
 		deathBlocks_.push_back(newDeathBlock_6);
 	}
 
-	/*for (int32_t i = 0; i < 2; ++i) {
-		DeathBlock* newDeathBlock_6 = new DeathBlock();
-		Vector3 deathBlockPosition_6 = mapChipField_->GetMapChipPositionByIndex(3, 83 + i);
-		newDeathBlock_6->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_6);
-
-		deathBlocks_.push_back(newDeathBlock_6);
+	for (int32_t i = 0; i < 4; ++i) {
+		DeathBlock* newDeathBlock_7 = new DeathBlock();
+		Vector3 deathBlockPosition_7 = mapChipField_->GetMapChipPositionByIndex(0, 84 + i);
+		newDeathBlock_7->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_7);
+		deathBlocks_.push_back(newDeathBlock_7);
 	}
 
-	for (int32_t i = 0; i < 2; ++i) {
-		DeathBlock* newDeathBlock_7 = new DeathBlock();
-		Vector3 deathBlockPosition_7 = mapChipField_->GetMapChipPositionByIndex(6, 83 + i);
-		newDeathBlock_7->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_7);
+	for (int32_t i = 0; i < 7; ++i) {
+		DeathBlock* newDeathBlock_8 = new DeathBlock();
+		Vector3 deathBlockPosition_8 = mapChipField_->GetMapChipPositionByIndex(3 + i, 100);
+		newDeathBlock_8->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_8);
+		deathBlocks_.push_back(newDeathBlock_8);
+	}
 
-		deathBlocks_.push_back(newDeathBlock_7);
-	}*/
+	for (int32_t i = 0; i < 8; ++i) {
+		DeathBlock* newDeathBlock_9 = new DeathBlock();
+		Vector3 deathBlockPosition_9 = mapChipField_->GetMapChipPositionByIndex(2 + i, 104 + i);
+		newDeathBlock_9->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_9);
+		deathBlocks_.push_back(newDeathBlock_9);
+	}
+
+	for (int32_t i = 0; i < 8; ++i) {
+		DeathBlock* newDeathBlock_10 = new DeathBlock();
+		Vector3 deathBlockPosition_10 = mapChipField_->GetMapChipPositionByIndex(8 - i, 114 + i);
+		newDeathBlock_10->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_10);
+		deathBlocks_.push_back(newDeathBlock_10);
+	}
+
+	for (int32_t i = 0; i < 8; ++i) {
+		DeathBlock* newDeathBlock_11 = new DeathBlock();
+		Vector3 deathBlockPosition_11 = mapChipField_->GetMapChipPositionByIndex(2 + i, 124 + i);
+		newDeathBlock_11->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_11);
+		deathBlocks_.push_back(newDeathBlock_11);
+	}
+
+	for (int32_t i = 0; i < 7; ++i) {
+		DeathBlock* newDeathBlock_12 = new DeathBlock();
+		Vector3 deathBlockPosition_12 = mapChipField_->GetMapChipPositionByIndex(3 + i, 141);
+		newDeathBlock_12->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_12);
+		deathBlocks_.push_back(newDeathBlock_12);
+	}
 
 	// ジャンプブロックの生成
 	JumpBlock* newJumpBlock = new JumpBlock();
@@ -176,6 +224,12 @@ void GameScene::Initialize() {
 	newJumpBlock_2->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_2);
 	jumpBlocks_.push_back(newJumpBlock_2);
 
+	// ゴールの生成
+	Goal* newGoal = new Goal();
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(1, 198);
+	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
+	goals_.push_back(newGoal);
+
 	phase_ = Phase::kPlay;
 }
 
@@ -187,6 +241,10 @@ void GameScene::Update() {
 	case Phase::kPlay:
 
 		worldTransformSkydome_.UpdateMatrix();
+
+		worldTransformOne_.UpdateMatrix();
+		worldTransformTwo_.UpdateMatrix();
+		worldTransformThree_.UpdateMatrix();
 
 		// 自キャラの更新
 		player_->Update();
@@ -284,6 +342,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	
+	modelOne_->Draw(worldTransformOne_, viewProjection_);
+	modelTwo_->Draw(worldTransformTwo_, viewProjection_);
+	modelThree_->Draw(worldTransformThree_, viewProjection_);
+
 	// 天球の描画
 	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
 
