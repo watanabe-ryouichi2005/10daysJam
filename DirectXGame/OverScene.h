@@ -1,8 +1,10 @@
 #pragma once
 
+#include "Audio.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "GameScene.h"
 
 class OverScene {
 public:

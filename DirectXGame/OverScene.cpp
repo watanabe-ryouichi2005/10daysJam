@@ -14,6 +14,7 @@ OverScene::~OverScene() {
 void OverScene::Initialize() {
 	modelTitle_ = Model::CreateFromOBJ("gameOver", true);
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
+
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 

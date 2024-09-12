@@ -63,7 +63,7 @@ void GameScene::Initialize() {
 	// サウンドデータの読み込み
 	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
 	// 音声再生
-	audio_->PlayWave(soundDataHandle_);
+	//audio_->PlayWave(soundDataHandle_);
 	// 音声再生
 	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
@@ -99,7 +99,7 @@ void GameScene::Initialize() {
 
 	// 敵の生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(23, 198);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(6, 9);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
 	goals_.push_back(newGoal);
@@ -186,6 +186,7 @@ void GameScene::Update() {
 
 	switch (phase_) {
 	case Phase::kPlay:
+
 		worldTransformSkydome_.UpdateMatrix();
 
 		// 自キャラの更新
@@ -220,6 +221,7 @@ void GameScene::Update() {
 	case Phase::kDead:
 		if (deathParticles_ && deathParticles_->IsDead()) {
 			isDead_ = true;
+			audio_->StopWave(voiceHandle_);
 		}
 		worldTransformSkydome_.UpdateMatrix();
 
@@ -241,6 +243,7 @@ void GameScene::Update() {
 	case Phase::kGoal:
 		if (deathParticles_ && deathParticles_->IsFinished()) {
 			finished_ = true;
+			audio_->StopWave(voiceHandle_);
 		}
 		worldTransformSkydome_.UpdateMatrix();
 
