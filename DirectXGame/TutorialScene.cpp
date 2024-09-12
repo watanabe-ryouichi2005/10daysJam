@@ -35,52 +35,52 @@ void TutorialScene::Initialize() {
 	worldTransformPlayer_.Initialize();
 	worldTransformPlayer_.scale_ = {kPlayerScale, kPlayerScale, kPlayerScale};
 	worldTransformPlayer_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
-	worldTransformPlayer_.translation_.x = -23.0f;
+	worldTransformPlayer_.translation_.x = -27.0f;
 	worldTransformPlayer_.translation_.y = +5.0f;
 
-	const float kTextKeys = 5.0f;
+	const float kTextKeys = 3.5f;
 	worldTransformKeys_.Initialize();
 	worldTransformKeys_.scale_ = {kTextKeys, kTextKeys, kTextKeys};
 	worldTransformKeys_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
-	worldTransformKeys_.translation_.x = -25.0f;
+	worldTransformKeys_.translation_.x = -23.0f;
 	worldTransformKeys_.translation_.y = +15.0f;
 
-	const float kTextSpaceKey = 3.0f;
+	const float kTextSpaceKey = 2.5f;
 	worldTransformSpaceKeys_.Initialize();
 	worldTransformSpaceKeys_.scale_ = {kTextSpaceKey, kTextSpaceKey, kTextSpaceKey};
 	worldTransformSpaceKeys_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
-	worldTransformSpaceKeys_.translation_.x = -18.0f;
+	worldTransformSpaceKeys_.translation_.x = -22.0f;
 	worldTransformSpaceKeys_.translation_.y = +11.0f;
 
-	const float kTextUpKey = 3.0f;
+	const float kTextUpKey = 2.5f;
 	worldTransformUpKeys_.Initialize();
 	worldTransformUpKeys_.scale_ = {kTextUpKey, kTextUpKey, kTextUpKey};
 	worldTransformUpKeys_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
-	worldTransformUpKeys_.translation_.x = -12.0f;
+	worldTransformUpKeys_.translation_.x = -13.0f;
 	worldTransformUpKeys_.translation_.y = +6.0f;
 
-	const float kTextLeftAndRightKey = 3.0f;
+	const float kTextLeftAndRightKey = 2.5f;
 	worldTransformLeftAndRightKeys_.Initialize();
 	worldTransformLeftAndRightKeys_.scale_ = {kTextLeftAndRightKey, kTextLeftAndRightKey, kTextLeftAndRightKey};
 	worldTransformLeftAndRightKeys_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
-	worldTransformLeftAndRightKeys_.translation_.x = -11.0f;
-	worldTransformLeftAndRightKeys_.translation_.y = +3.0f;
+	worldTransformLeftAndRightKeys_.translation_.x = -11.5f;
+	worldTransformLeftAndRightKeys_.translation_.y = +2.0f;
 
-	const float kTextRule = 5.0f;
+	const float kTextRule = 3.5f;
 	worldTransformRule_.Initialize();
 	worldTransformRule_.scale_ = {kTextRule, kTextRule, kTextRule};
 	worldTransformRule_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
-	worldTransformRule_.translation_.x = -26.0f;
+	worldTransformRule_.translation_.x = -25.0f;
 	worldTransformRule_.translation_.y = -6.0f;
 
-	const float kTextRuleDescription_1 = 3.0f;
+	const float kTextRuleDescription_1 = 2.0f;
 	worldTransformRuleDescription_1_.Initialize();
 	worldTransformRuleDescription_1_.scale_ = {kTextRuleDescription_1, kTextRuleDescription_1, kTextRuleDescription_1};
 	worldTransformRuleDescription_1_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
 	worldTransformRuleDescription_1_.translation_.x = 0.0f;
 	worldTransformRuleDescription_1_.translation_.y = -11.0f;
 
-	const float kTextRuleDescription_2 = 3.0f;
+	const float kTextRuleDescription_2 = 2.0f;
 	worldTransformRuleDescription_2_.Initialize();
 	worldTransformRuleDescription_2_.scale_ = {kTextRuleDescription_2, kTextRuleDescription_2, kTextRuleDescription_2};
 	worldTransformRuleDescription_2_.rotation_.y = 0.99f * std::numbers::pi_v<float>;

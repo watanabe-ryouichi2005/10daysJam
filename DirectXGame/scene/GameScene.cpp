@@ -99,7 +99,7 @@ void GameScene::Initialize() {
 
 	// 敵の生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(6, 9);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(6, 149);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 
 	goals_.push_back(newGoal);
@@ -109,43 +109,44 @@ void GameScene::Initialize() {
 		FallingBlock* newFallingBlock = new FallingBlock();
 		Vector3 fallingBlockPosition = mapChipField_->GetMapChipPositionByIndex(1 + i, 0);
 		newFallingBlock->Initialize(modelDeathBlock_, &viewProjection_, fallingBlockPosition);
-
 		fallingBlocks_.push_back(newFallingBlock);
 	}
 
 	// デスブロックの生成
-	DeathBlock* newDeathBlock = new DeathBlock();
-	Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(5, 9);
-	newDeathBlock->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition);
-
-	deathBlocks_.push_back(newDeathBlock);
+	for (int32_t i = 0; i < 2; ++i) {
+		DeathBlock* newDeathBlock = new DeathBlock();
+		Vector3 deathBlockPosition = mapChipField_->GetMapChipPositionByIndex(10, 14 + i);
+		newDeathBlock->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition);
+		deathBlocks_.push_back(newDeathBlock);
+	}
 
 	DeathBlock* newDeathBlock_2 = new DeathBlock();
 	Vector3 deathBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(4, 23);
 	newDeathBlock_2->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_2);
-
 	deathBlocks_.push_back(newDeathBlock_2);
 
 	DeathBlock* newDeathBlock_3 = new DeathBlock();
 	Vector3 deathBlockPosition_3 = mapChipField_->GetMapChipPositionByIndex(10, 28);
 	newDeathBlock_3->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_3);
-
 	deathBlocks_.push_back(newDeathBlock_3);
 
-	for (int32_t i = 0; i < 8; ++i) {
-		DeathBlock* newDeathBlock_4 = new DeathBlock();
-		Vector3 deathBlockPosition_4 = mapChipField_->GetMapChipPositionByIndex(2 + i, 52);
-		newDeathBlock_4->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_4);
+	DeathBlock* newDeathBlock_4 = new DeathBlock();
+	Vector3 deathBlockPosition_4 = mapChipField_->GetMapChipPositionByIndex(6, 33);
+	newDeathBlock_4->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_4);
+	deathBlocks_.push_back(newDeathBlock_4);
 
-		deathBlocks_.push_back(newDeathBlock_4);
+	for (int32_t i = 0; i < 8; ++i) {
+		DeathBlock* newDeathBlock_5 = new DeathBlock();
+		Vector3 deathBlockPosition_5 = mapChipField_->GetMapChipPositionByIndex(2 + i, 52);
+		newDeathBlock_5->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_5);
+		deathBlocks_.push_back(newDeathBlock_5);
 	}
 
 	for (int32_t i = 0; i < 7; ++i) {
-		DeathBlock* newDeathBlock_5 = new DeathBlock();
-		Vector3 deathBlockPosition_5 = mapChipField_->GetMapChipPositionByIndex(1 + i, 59);
-		newDeathBlock_5->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_5);
-
-		deathBlocks_.push_back(newDeathBlock_5);
+		DeathBlock* newDeathBlock_6 = new DeathBlock();
+		Vector3 deathBlockPosition_6 = mapChipField_->GetMapChipPositionByIndex(1 + i, 59);
+		newDeathBlock_6->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_6);
+		deathBlocks_.push_back(newDeathBlock_6);
 	}
 
 	/*for (int32_t i = 0; i < 2; ++i) {
@@ -168,13 +169,11 @@ void GameScene::Initialize() {
 	JumpBlock* newJumpBlock = new JumpBlock();
 	Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(3, 58);
 	newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
-
 	jumpBlocks_.push_back(newJumpBlock);
 
 	JumpBlock* newJumpBlock_2 = new JumpBlock();
 	Vector3 jumpBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(6, 58);
 	newJumpBlock_2->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_2);
-
 	jumpBlocks_.push_back(newJumpBlock_2);
 
 	phase_ = Phase::kPlay;
