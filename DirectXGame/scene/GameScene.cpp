@@ -104,7 +104,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 8);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(9, 139);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
@@ -206,9 +206,9 @@ void GameScene::Initialize() {
 		deathBlocks_.push_back(newDeathBlock_11);
 	}
 
-	for (int32_t i = 0; i < 7; ++i) {
+	for (int32_t i = 0; i < 8; ++i) {
 		DeathBlock* newDeathBlock_12 = new DeathBlock();
-		Vector3 deathBlockPosition_12 = mapChipField_->GetMapChipPositionByIndex(3 + i, 141);
+		Vector3 deathBlockPosition_12 = mapChipField_->GetMapChipPositionByIndex(2 + i, 141);
 		newDeathBlock_12->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_12);
 		deathBlocks_.push_back(newDeathBlock_12);
 	}
