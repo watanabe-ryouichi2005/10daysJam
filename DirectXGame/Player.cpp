@@ -88,13 +88,13 @@ AABB Player::GetAABB() {
 
 void Player::FallingOnCollision(const FallingBlock* fallingBlock) {
 	(void)fallingBlock;
-	// ジャンプ初速
+	// パーティクル
 	isDead_ = true;
 }
 
 void Player::OverOnCollision(const DeathBlock* deathBlock) {
 	(void)deathBlock;
-	// ジャンプ初速
+	// パーティクル
 	isDead_ = true;
 }
 
@@ -106,7 +106,7 @@ void Player::JumpOnCollision(const JumpBlock* jumpBlock) {
 
 void Player::GoalOnCollision(const Goal* goal) {
 	(void)goal;
-	// ジャンプ初速
+	// パーティクル
 	isGoal_ = true;
 }
 

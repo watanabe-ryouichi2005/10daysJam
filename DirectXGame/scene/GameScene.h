@@ -5,10 +5,10 @@
 #include "DeathParticles.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
-#include "Goal.h"
 #include "FallingBlock.h"
 #include "DeathBlock.h"
 #include "JumpBlock.h"
+#include "Goal.h"
 #include "Input.h"
 #include "MapChipField.h"
 #include "Model.h"
@@ -71,6 +71,10 @@ private: // メンバ変数
 	/// </summary>
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
+	// ゲームテキスト
+	WorldTransform worldTransformOne_;
+	WorldTransform worldTransformTwo_;
+	WorldTransform worldTransformThree_;
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 	//サウンドデータハンドル
@@ -84,12 +88,17 @@ private: // メンバ変数
 	Model* modelPlayer_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-	Model* modelGoal_ = nullptr;
 	Model* modelFallingBlock_ = nullptr;
 	Model* modelDeathBlock_ = nullptr;
 	Model* modelJumpBlock_ = nullptr;
+	Model* modelGoal_ = nullptr;
 	Model* modelDeathParticle_ = nullptr;
-	Model* modelLifeCube_ = nullptr;
+
+	// モデルテキスト
+	Model* modelOne_ = nullptr;
+	Model* modelTwo_ = nullptr;
+	Model* modelThree_ = nullptr;
+  
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
 	
@@ -101,10 +110,10 @@ private: // メンバ変数
 	MapChipField* mapChipField_;
 	CameraController* cameraController = nullptr;
 
-	std::list<Goal*> goals_;
 	std::list<FallingBlock*> fallingBlocks_;
 	std::list<DeathBlock*> deathBlocks_;
 	std::list<JumpBlock*> jumpBlocks_;
+	std::list<Goal*> goals_;
 
 	bool finished_ = false;
 	bool isDead_ = false;
