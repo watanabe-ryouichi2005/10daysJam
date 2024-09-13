@@ -72,14 +72,14 @@ private: // メンバ変数
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 	// ゲームテキスト
-	WorldTransform worldTransformOne_;
-	WorldTransform worldTransformTwo_;
-	WorldTransform worldTransformThree_;
+	WorldTransform worldTransformOneText_;
+	WorldTransform worldTransformTwoText_;
+	WorldTransform worldTransformThreeText_;
+	WorldTransform worldTransformClearText_;
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 	//サウンドデータハンドル
 	uint32_t soundDataHandle_ = 0;
-	uint32_t soundEffectHandle_ = 0;
 	// 音声再生ハンドル
 	uint32_t voiceHandle_ = 0;
 	// 自キャラ
@@ -99,6 +99,11 @@ private: // メンバ変数
 	Model* modelTwo_ = nullptr;
 	Model* modelThree_ = nullptr;
   
+	Model* modelOneText_ = nullptr;
+	Model* modelTwoText_ = nullptr;
+	Model* modelThreeText_ = nullptr;
+	Model* modelClearText_ = nullptr;
+
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
 	

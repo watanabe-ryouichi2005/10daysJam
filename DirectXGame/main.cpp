@@ -57,12 +57,12 @@ void ChangeScene() {
 	case Scene::kTutorial:
 		if (tutorialScene->IsFinished()) {
 			// シーン変更
-			scene = Scene::kGame;
+			scene = Scene::kTitle;
 			delete tutorialScene;
 			tutorialScene = nullptr;
 			// 新シーンの生成と初期化
-			gameScene = new GameScene();
-			gameScene->Initialize();
+			titleScene = new TitleScene();
+			titleScene->Initialize();
 		}
 		break;
 

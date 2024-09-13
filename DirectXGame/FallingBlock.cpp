@@ -13,7 +13,7 @@ void FallingBlock::Initialize(Model* model, ViewProjection* viewProjection, cons
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> * 3.0f / 2.0f;
 	viewProjection_ = viewProjection;
 
-	//velocity_ = {0, -kWalkSpeed, 0};
+	velocity_ = {0, -kWalkSpeed, 0};
 	walkTimer = 0.0f;
 }
 
