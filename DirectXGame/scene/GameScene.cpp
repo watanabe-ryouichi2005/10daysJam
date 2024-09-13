@@ -65,9 +65,9 @@ void GameScene::Initialize() {
 	// サウンドデータの読み込み
 	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
 	// 音声再生
-	audio_->PlayWave(soundDataHandle_);
+	//audio_->PlayWave(soundDataHandle_);
 	// 音声再生
-	//voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
+	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 
 	// マップチップフィールドの生成
 	mapChipField_ = new MapChipField;
@@ -222,6 +222,9 @@ void GameScene::Update() {
 	case Phase::kDead:
 		if (deathParticles_ && deathParticles_->IsDead()) {
 			isDead_ = true;
+			audio_->StopWave(voiceHandle_);
+			soundEffectHandle_ = audio_->LoadWave("soundChip.wav");
+			audio_->PlayWave(soundEffectHandle_);
 		}
 		worldTransformSkydome_.UpdateMatrix();
 
