@@ -53,6 +53,7 @@ public: // メンバ関数
 
 	bool IsDead() const { return isDead_; };
 	bool IsFinished() const { return finished_; };
+	
 
 private: // メンバ変数
 	enum class Phase {
@@ -78,6 +79,7 @@ private: // メンバ変数
 	uint32_t textureHandle_ = 0;
 	//サウンドデータハンドル
 	uint32_t soundDataHandle_ = 0;
+	uint32_t soundEffectHandle_ = 0;
 	// 音声再生ハンドル
 	uint32_t voiceHandle_ = 0;
 	// 自キャラ
@@ -96,7 +98,7 @@ private: // メンバ変数
 	Model* modelOne_ = nullptr;
 	Model* modelTwo_ = nullptr;
 	Model* modelThree_ = nullptr;
-
+  
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	WorldTransform worldTransformSkydome_;
 	

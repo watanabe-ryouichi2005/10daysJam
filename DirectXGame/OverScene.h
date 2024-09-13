@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Audio.h"
+#include"Audio.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "GameScene.h"
+#include "DirectXCommon.h"
 
 class OverScene {
 public:
@@ -19,8 +19,14 @@ public:
 	bool IsFinished() const { return finished_; };
 
 private:
-	static inline const float kTimeTitleMove = 2.0f;
+	
+	Audio* audio_ = Audio::GetInstance();
 
+
+	
+	static inline const float kTimeTitleMove = 2.0f;
+	uint32_t soundHandle_ = 0;
+	uint32_t voicehandle_ = 0;
 	ViewProjection viewProjection_;
 	WorldTransform worldTransformTitle_;
 	WorldTransform worldTransformSkydome_;

@@ -16,6 +16,7 @@ TitleScene* titleScene = nullptr;
 TutorialScene* tutorialScene = nullptr;
 ClearScene* clearScene = nullptr;
 OverScene* overScene = nullptr;
+Audio* audio_ = Audio::GetInstance();
 
 enum class Scene {
 	kUnknown = 0,
@@ -72,7 +73,9 @@ void ChangeScene() {
 			delete gameScene;
 			gameScene = nullptr;
 			overScene = new OverScene();
+
 			overScene->Initialize();
+			
 		}
 		else if (gameScene->IsFinished()) {
 			// シーン変更
@@ -119,6 +122,7 @@ void UpdateScene() {
 		break;
 	case Scene::kDead:
 		overScene->Update();
+	//	Audio::StopWave()
 		break;
 	case Scene::kClear:
 		clearScene->Update();
