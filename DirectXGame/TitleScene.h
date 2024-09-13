@@ -28,6 +28,8 @@ private:
 	WorldTransform worldTransformGameSelect_;
 	WorldTransform worldTransformTutorialSelect_;
 	WorldTransform worldTransformSelectWall_;
+	WorldTransform worldTransformUpAndDownText_;
+	WorldTransform worldTransformSpaceText_;
 
 	Model* modelTitle_ = nullptr;
 	Model* modelPress_ = nullptr;
@@ -36,6 +38,8 @@ private:
 	Model* modelGameSelect_ = nullptr;
 	Model* modelTutorialSelect_ = nullptr;
 	Model* modelSelectWall_ = nullptr;
+	Model* modelUpAndDownText_ = nullptr;
+	Model* modelSpaceText_ = nullptr;
 
 	float counter_ = 0.0f;
 	bool game_ = false;

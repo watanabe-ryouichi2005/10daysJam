@@ -14,6 +14,8 @@ TitleScene::~TitleScene() {
 	delete modelGameSelect_;
 	delete modelTutorialSelect_;
 	delete modelSelectWall_;
+	delete modelUpAndDownText_;
+	delete modelSpaceText_;
 }
 
 void TitleScene::Initialize() {
@@ -22,6 +24,8 @@ void TitleScene::Initialize() {
 	modelGameSelect_ = Model::CreateFromOBJ("gameSelectText", true);
 	modelTutorialSelect_ = Model::CreateFromOBJ("tutorialSelectText", true);
 	modelSelectWall_ = Model::CreateFromOBJ("selectWall", true);
+	modelUpAndDownText_ = Model::CreateFromOBJ("upAndDownText", true);
+	modelSpaceText_ = Model::CreateFromOBJ("spaceText", true);
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
@@ -49,6 +53,20 @@ void TitleScene::Initialize() {
 	if (select_ == 0) {
 		worldTransformSelectWall_.translation_.y = -8.0f;
 	}
+
+	const float kTextUpAndDown = 3.0f;
+	worldTransformUpAndDownText_.Initialize();
+	worldTransformUpAndDownText_.scale_ = {kTextUpAndDown, kTextUpAndDown, kTextUpAndDown};
+	worldTransformUpAndDownText_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
+	worldTransformUpAndDownText_.translation_.x = -33.0f;
+	worldTransformUpAndDownText_.translation_.y = -15.0f;
+
+	const float kTextSpace = 2.5f;
+	worldTransformSpaceText_.Initialize();
+	worldTransformSpaceText_.scale_ = {kTextSpace, kTextSpace, kTextSpace};
+	worldTransformSpaceText_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
+	worldTransformSpaceText_.translation_.x = -28.0f;
+	worldTransformSpaceText_.translation_.y = -16.2f;
 
 	worldTransformSkydome_.Initialize();
 }
@@ -86,6 +104,8 @@ void TitleScene::Update() {
 	worldTransformGameSelect_.UpdateMatrix();
 	worldTransformTutorialSelect_.UpdateMatrix();
 	worldTransformSelectWall_.UpdateMatrix();
+	worldTransformUpAndDownText_.UpdateMatrix();
+	worldTransformSpaceText_.UpdateMatrix();
 }
 
 void TitleScene::Draw() {
@@ -100,6 +120,8 @@ void TitleScene::Draw() {
 	modelGameSelect_->Draw(worldTransformGameSelect_, viewProjection_);
 	modelTutorialSelect_->Draw(worldTransformTutorialSelect_, viewProjection_);
 	modelSelectWall_->Draw(worldTransformSelectWall_, viewProjection_);
+	modelUpAndDownText_->Draw(worldTransformUpAndDownText_, viewProjection_);
+	modelSpaceText_->Draw(worldTransformSpaceText_, viewProjection_);
 
 	Model::PostDraw();
 }

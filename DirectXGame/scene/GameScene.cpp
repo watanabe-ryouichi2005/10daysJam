@@ -39,9 +39,9 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 	delete mapChipField_;
 	delete cameraController;
-	delete modelOne_;
-	delete modelTwo_;
-	delete modelThree_;
+	delete modelOneText_;
+	delete modelTwoText_;
+	delete modelThreeText_;
 }
 
 void GameScene::Initialize() {
@@ -62,34 +62,40 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::CreateFromOBJ("block");
 	modelSkydome_ = Model::CreateFromOBJ("sky", true);
 	modelDeathParticle_ = Model::CreateFromOBJ("deathParticle", true);
-	modelLifeCube_ = Model::CreateFromOBJ("LifeCube", true);
-
 
 	// 3Dテキストモデル生成
-	modelOne_ = Model::CreateFromOBJ("1_text", true);
-	modelTwo_ = Model::CreateFromOBJ("2_text", true);
-	modelThree_ = Model::CreateFromOBJ("3_text", true);
+	modelOneText_ = Model::CreateFromOBJ("1_text", true);
+	modelTwoText_ = Model::CreateFromOBJ("2_text", true);
+	modelThreeText_ = Model::CreateFromOBJ("3_text", true);
+	modelClearText_ = Model::CreateFromOBJ("clearText", true);
 
 	const float kOneText = 1.6f;
-	worldTransformOne_.Initialize();
-	worldTransformOne_.scale_ = {kOneText, kOneText, kOneText};
-	worldTransformOne_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
-	worldTransformOne_.translation_.x = 2.0f;
-	worldTransformOne_.translation_.y = +45.5f;
+	worldTransformOneText_.Initialize();
+	worldTransformOneText_.scale_ = {kOneText, kOneText, kOneText};
+	worldTransformOneText_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
+	worldTransformOneText_.translation_.x = 2.0f;
+	worldTransformOneText_.translation_.y = +19.5f;
 
 	const float kTwoText = 1.6f;
-	worldTransformTwo_.Initialize();
-	worldTransformTwo_.scale_ = {kTwoText, kTwoText, kTwoText};
-	worldTransformTwo_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
-	worldTransformTwo_.translation_.x = 5.0f;
-	worldTransformTwo_.translation_.y = +45.5f;
+	worldTransformTwoText_.Initialize();
+	worldTransformTwoText_.scale_ = {kTwoText, kTwoText, kTwoText};
+	worldTransformTwoText_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
+	worldTransformTwoText_.translation_.x = 5.0f;
+	worldTransformTwoText_.translation_.y = +19.5f;
 
 	const float kThreeText = 1.6f;
-	worldTransformThree_.Initialize();
-	worldTransformThree_.scale_ = {kThreeText, kThreeText, kThreeText};
-	worldTransformThree_.rotation_.y = 0.9f * std::numbers::pi_v<float>;
-	worldTransformThree_.translation_.x = 8.0f;
-	worldTransformThree_.translation_.y = +45.5f;
+	worldTransformThreeText_.Initialize();
+	worldTransformThreeText_.scale_ = {kThreeText, kThreeText, kThreeText};
+	worldTransformThreeText_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
+	worldTransformThreeText_.translation_.x = 8.0f;
+	worldTransformThreeText_.translation_.y = +19.5f;
+
+	const float kClearText = 0.5f;
+	worldTransformClearText_.Initialize();
+	worldTransformClearText_.scale_ = {kClearText, kClearText, kClearText};
+	worldTransformClearText_.rotation_.y = 0.99f * std::numbers::pi_v<float>;
+	worldTransformClearText_.translation_.x = 8.0f;
+	worldTransformClearText_.translation_.y = +1.7f;
 
 	// サウンドデータの読み込み
 	soundDataHandle_ = audio_->LoadWave("bgm.mp3");
@@ -106,7 +112,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	// 自キャラの初期化
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(9, 139);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 8);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 	player_->SetMapChipField(mapChipField_);
 
@@ -215,20 +221,66 @@ void GameScene::Initialize() {
 		deathBlocks_.push_back(newDeathBlock_12);
 	}
 
-	// ジャンプブロックの生成
-	JumpBlock* newJumpBlock = new JumpBlock();
-	Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(3, 58);
-	newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
-	jumpBlocks_.push_back(newJumpBlock);
+	for (int32_t i = 0; i < 8; ++i) {
+		DeathBlock* newDeathBlock_13 = new DeathBlock();
+		Vector3 deathBlockPosition_13 = mapChipField_->GetMapChipPositionByIndex(1 + i, 148);
+		newDeathBlock_13->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_13);
+		deathBlocks_.push_back(newDeathBlock_13);
+	}
 
-	JumpBlock* newJumpBlock_2 = new JumpBlock();
-	Vector3 jumpBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(6, 58);
-	newJumpBlock_2->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_2);
-	jumpBlocks_.push_back(newJumpBlock_2);
+	for (int32_t i = 0; i < 4; ++i) {
+		DeathBlock* newDeathBlock_14 = new DeathBlock();
+		Vector3 deathBlockPosition_14 = mapChipField_->GetMapChipPositionByIndex(2 + i, 159 + i);
+		newDeathBlock_14->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_14);
+		deathBlocks_.push_back(newDeathBlock_14);
+	}
+
+	for (int32_t i = 0; i < 4; ++i) {
+		DeathBlock* newDeathBlock_15 = new DeathBlock();
+		Vector3 deathBlockPosition_15 = mapChipField_->GetMapChipPositionByIndex(8 - i, 164 + i);
+		newDeathBlock_15->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_15);
+		deathBlocks_.push_back(newDeathBlock_15);
+	}
+
+	for (int32_t i = 0; i < 4; ++i) {
+		DeathBlock* newDeathBlock_16 = new DeathBlock();
+		Vector3 deathBlockPosition_16 = mapChipField_->GetMapChipPositionByIndex(1 + i, 167);
+		newDeathBlock_16->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_16);
+		deathBlocks_.push_back(newDeathBlock_16);
+	}
+
+	for (int32_t i = 0; i < 2; ++i) {
+		DeathBlock* newDeathBlock_17 = new DeathBlock();
+		Vector3 deathBlockPosition_17 = mapChipField_->GetMapChipPositionByIndex(3 + i + i + i, 174);
+		newDeathBlock_17->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_17);
+		deathBlocks_.push_back(newDeathBlock_17);
+	}
+
+	for (int32_t i = 0; i < 2; ++i) {
+		DeathBlock* newDeathBlock_18 = new DeathBlock();
+		Vector3 deathBlockPosition_18 = mapChipField_->GetMapChipPositionByIndex(5 + i + i + i, 189);
+		newDeathBlock_18->Initialize(modelDeathBlock_, &viewProjection_, deathBlockPosition_18);
+		deathBlocks_.push_back(newDeathBlock_18);
+	}
+
+	// ジャンプブロックの生成
+	for (int32_t i = 0; i < 2; ++i) {
+		JumpBlock* newJumpBlock = new JumpBlock();
+		Vector3 jumpBlockPosition = mapChipField_->GetMapChipPositionByIndex(3 + i + i + i, 58);
+		newJumpBlock->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition);
+		jumpBlocks_.push_back(newJumpBlock);
+	}
+
+	for (int32_t i = 0; i < 2; ++i) {
+		JumpBlock* newJumpBlock_2 = new JumpBlock();
+		Vector3 jumpBlockPosition_2 = mapChipField_->GetMapChipPositionByIndex(2 + i + i + i, 147);
+		newJumpBlock_2->Initialize(modelJumpBlock_, &viewProjection_, jumpBlockPosition_2);
+		jumpBlocks_.push_back(newJumpBlock_2);
+	}
 
 	// ゴールの生成
 	Goal* newGoal = new Goal();
-	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(1, 198);
+	Vector3 goalPosition = mapChipField_->GetMapChipPositionByIndex(8, 198);
 	newGoal->Initialize(modelGoal_, &viewProjection_, goalPosition);
 	goals_.push_back(newGoal);
 
@@ -244,9 +296,10 @@ void GameScene::Update() {
 
 		worldTransformSkydome_.UpdateMatrix();
 
-		worldTransformOne_.UpdateMatrix();
-		worldTransformTwo_.UpdateMatrix();
-		worldTransformThree_.UpdateMatrix();
+		worldTransformOneText_.UpdateMatrix();
+		worldTransformTwoText_.UpdateMatrix();
+		worldTransformThreeText_.UpdateMatrix();
+		worldTransformClearText_.UpdateMatrix();
 
 		// 自キャラの更新
 		player_->Update();
@@ -348,9 +401,10 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	
-	modelOne_->Draw(worldTransformOne_, viewProjection_);
-	modelTwo_->Draw(worldTransformTwo_, viewProjection_);
-	modelThree_->Draw(worldTransformThree_, viewProjection_);
+	modelOneText_->Draw(worldTransformOneText_, viewProjection_);
+	modelTwoText_->Draw(worldTransformTwoText_, viewProjection_);
+	modelThreeText_->Draw(worldTransformThreeText_, viewProjection_);
+	modelClearText_->Draw(worldTransformClearText_, viewProjection_);
 
 	// 天球の描画
 	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
